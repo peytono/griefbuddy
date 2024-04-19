@@ -26,6 +26,7 @@ model User {
   myLocation        String?
   agee              String?
   myPhoneNumber     String?
+  chatbotName       String           @default("Rob")
   events            User_Event[]
   sender            Message[]        @relation("Sender")
   recipient         Message[]        @relation("Recipient")

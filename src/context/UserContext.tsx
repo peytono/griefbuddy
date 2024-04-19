@@ -14,6 +14,7 @@ export type AuthUser = {
   myLocation: String,
   myPhoneNumber: String,
   preferredName: String,
+  chatbotName: string,
   // buddies: Buddy[];
 };
 

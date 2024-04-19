@@ -25,8 +25,21 @@ function ChatBot() {
 
   const [message, setMessage] = useState('');
 
+  // const defaultOrNamed = () => {
+  //   if(!user || !user.chatbotName) {
+
+  //   }
+  // }
+
+  const [botName, setBotName] = useState('Tom');
+
   const startState = [
-    { role: 'system', content: 'You are an inquisitive friend to users who are grieving.' },
+    {
+      role: 'system',
+      content: `You are an inquisitive friend named, ${
+        botName
+      }, to users who are grieving.`,
+    },
   ];
 
   const [messages, addMessage] = useState(startState);
@@ -48,15 +61,19 @@ function ChatBot() {
     userId: Number;
   };
 
-  const sendText = () => (axios.post('/chatbot/text', { name: user.name, phone: user.emConNum })
+  const sendText = () => axios
+    .post('/chatbot/text', { name: user.name, phone: user.emConNum })
     .then(() => {
       toast({ title: `Sent message to ${user.emConName}`, status: 'success', isClosable: true });
     })
     .catch((err) => {
       console.error('failed sending friend message', err);
-      toast({ title: `Failed sending message to ${user.emConName} at ${user.emConNum}`, status: 'error', isClosable: true });
-    })
-  );
+      toast({
+        title: `Failed sending message to ${user.emConName} at ${user.emConNum}`,
+        status: 'error',
+        isClosable: true,
+      });
+    });
 
   const onSend = () => {
     const aiMessage = { role: 'user', content: message };
@@ -76,7 +93,9 @@ function ChatBot() {
     } else {
       allMessages = messages.concat([aiMessage]);
       addMessage(allMessages);
-      axios.post('/chatbot/db', { message: aiMessage, userId: user.id }).catch((err) => console.error('failed posting new message', err));
+      axios
+        .post('/chatbot/db', { message: aiMessage, userId: user.id })
+        .catch((err) => console.error('failed posting new message', err));
     }
 
     axios
@@ -89,7 +108,11 @@ function ChatBot() {
       .then(({ data }) => {
         if (data && user.emConNum) {
           // should let the user know a friend message was sent
-          toast({ title: `Sending message to ${user.emConName}`, status: 'warning', isClosable: true });
+          toast({
+            title: `Sending message to ${user.emConName}`,
+            status: 'warning',
+            isClosable: true,
+          });
           sendText();
         }
       })
@@ -106,10 +129,12 @@ function ChatBot() {
   };
 
   useEffect(() => {
-    axios.get('/user')
+    axios
+      .get('/user')
       .then(({ data }) => {
         if (typeof data === 'object') {
           setUser({ ...data });
+          setBotName(data.chatbotName);
         }
       })
       .then(() => axios.get('/chatbot/convo'))
@@ -128,6 +153,7 @@ function ChatBot() {
           addMessage((curMessages) => curMessages.concat(response.data.message));
         });
       })
+      // .then(() => setBotName(user.chatbotName))
       .catch((err: AxiosError) => console.error('failed finding user/chat', err));
   }, [setUser]);
 
@@ -135,7 +161,7 @@ function ChatBot() {
     <ChakraProvider>
       <Center>
         <Heading paddingBottom="15px" size="3xl" color="blue.200">
-          Chat Bot
+          {`Chat Bot ${user?.chatbotName}`}
         </Heading>
       </Center>
       <Container>
