@@ -15,9 +15,13 @@ const openai = new OpenAI({
 });
 
 chatbot.get('/new', async (req: Request, res: Response) => {
+  // should add users chatbot name to content start string
+  // console.log(req.user.chatbotName);
   const newChat = await main();
   res.send(newChat);
 });
+
+// create patch route that updates the start content string to include chatbot name
 
 chatbot.post('/', async (req: Request, res: Response) => {
   const params: OpenAI.Chat.ChatCompletionCreateParams = {
