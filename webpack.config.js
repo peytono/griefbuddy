@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     index: './src/index.tsx',
     map: './src/components/MeetupMap.tsx',
+    style: './style/style.css'
   },
   devtool: 'inline-source-map',
   // this is still needed for instance to run production mode
@@ -44,15 +45,17 @@ module.exports = {
         include: [
           path.resolve(__dirname, 'src'),
           path.resolve(__dirname, 'node_modules', 'react-big-calendar'),
+          path.resolve(__dirname, 'style')
         ],
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.css'],
   },
   output: {
     filename: '[name].bundle.js',
+    cssFilename: '[name].bundle.css',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     chunkFilename: '[id].bundle.js',

@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { UserContext } from '../context/UserContext';
+import '../../style/style.css';
 
 function ChatBot() {
   const toast = useToast();
@@ -175,7 +176,7 @@ function ChatBot() {
         </Heading>
       </Center>
       <Container>
-        <Button marginBottom="15px" bg="red" color="white" onClick={onDelete}>
+        <Button marginBottom="15px" className="delete" onClick={onDelete}>
           Delete Conversation
         </Button>
         <Box overflowY="auto" maxHeight="70vh" marginBottom="10px">
