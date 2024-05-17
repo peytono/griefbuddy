@@ -1,5 +1,9 @@
 /* calendar nav buttons not visible in dark mode */
-/* .rbc-btn-group {
+.rbc-btn-group {
   background: black;
+  /* color: white; */
+}
+
+.rbc-btn-group > button {
   color: white;
-} */
+}

@@ -1,9 +1,10 @@
-import React, { useMemo, cloneElement, Children, useState, useEffect } from 'react';
+import React, { useMemo, cloneElement, Children, useState, useEffect, BaseSyntheticEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Calendar, dayjsLocalizer, Views, Event } from 'react-big-calendar';
 import dayjs from 'dayjs';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './index.css';
+import { Box, Button, ButtonGroup, Flex } from '@chakra-ui/react';
 
 const localizer = dayjsLocalizer(dayjs);
 
@@ -31,6 +32,8 @@ interface CalEvent extends Event {
   ogId: string;
 }
 
+type Keys = keyof typeof Views;
+
 function EventsCalendar({
   events,
   setEventFocus,
@@ -41,6 +44,17 @@ function EventsCalendar({
   const [doubleClickedEventId, setDoubleClickedEventId] = useState(null as Number);
 
   const viewsKeys = Object.entries(Views);
+
+  const [view, setView] = useState<(typeof Views)[Keys]>(Views.MONTH);
+
+  function viewClick(e: BaseSyntheticEvent) {
+    // console.log(e.target.innerHTML);
+    if (e.target.innerHTML === 'Month') {
+      setView(Views.MONTH);
+    } else if (e.target.innerHTML === 'Agenda') {
+      setView(Views.AGENDA);
+    }
+  }
 
   const { components, defaultDate } = useMemo(
     () => ({
@@ -76,30 +90,53 @@ function EventsCalendar({
   }
 
   return (
-    <div className="height600">
-      <Calendar
-        localizer={localizer}
-        events={events.map((event) => ({
-          title: event.title,
-          // start and end must be date objects
-          start: new Date(event.startDate),
-          end: new Date(event.endDate),
-          id: event.id,
-          ogId: event.OgId,
-        }))}
-        onDoubleClickEvent={onDoubleClick}
-        onSelectEvent={onSelect}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-        showMultiDayTimes
-        step={60}
-        views={['month', 'agenda']}
-        drilldownView="agenda"
-        components={components}
-        defaultDate={defaultDate}
-      />
-    </div>
+    <>
+      <Flex>
+        <Box>
+          <ButtonGroup size="sm" isAttached variant="outline">
+            <Button>Today</Button>
+            <Button>Back</Button>
+            <Button>Next</Button>
+          </ButtonGroup>
+        </Box>
+        <Box>
+          <ButtonGroup size="sm" onClick={(e) => viewClick(e)} isAttached variant="outline">
+            <Button isActive={view === Views.MONTH}>Month</Button>
+            <Button isActive={view === Views.AGENDA}>Agenda</Button>
+          </ButtonGroup>
+        </Box>
+      </Flex>
+      <Box>
+        <Calendar
+          localizer={localizer}
+          events={events.map((event) => ({
+            title: event.title,
+            // start and end must be date objects
+            start: new Date(event.startDate),
+            end: new Date(event.endDate),
+            id: event.id,
+            ogId: event.OgId,
+          }))}
+          onDoubleClickEvent={onDoubleClick}
+          onSelectEvent={onSelect}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+          showMultiDayTimes
+          step={60}
+          views={['month', 'agenda']}
+          defaultView="month"
+          // onView={(view) => view}
+          // onView={() => {}}
+          drilldownView="agenda"
+          onDrillDown={() => setView(Views.AGENDA)}
+          view={view}
+          components={components}
+          defaultDate={defaultDate}
+          // toolbar={false}
+        />
+      </Box>
+    </>
   );
 }
 
