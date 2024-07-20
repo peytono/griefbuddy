@@ -23,7 +23,6 @@ profile.patch('/', async (req: Request, res: Response) => {
   const { id, data } = req.body;
   try {
     const updatedUser = await User.update({ where: { id }, data });
-    console.log(updatedUser);
     res.send(updatedUser);
   } catch (err) {
     console.error('failed updating user: ', err);

@@ -23,14 +23,12 @@ function Profile() {
 
   const [user, setUser] = useState({} as User);
 
-  // may need to be updated to call db too - incase a user updates, leaves, and returns...
   useEffect(() => {
     axios
       .get('/user')
       .then(({ data }: { data: User }) => axios.get('chat/user', { params: { id: data.id } }))
       .then(({ data }) => setUser(data))
       .catch((err) => console.error('failed finding user cookie: ', err));
-    console.log('set user from cookie');
   }, [user.id]);
 
   return (
@@ -54,7 +52,6 @@ function Profile() {
             <TabPanel>{user.id ? <AboutMe user={user} setUser={setUser} /> : null}</TabPanel>
           </TabPanels>
         </Tabs>
-        {/* <Text>{user.age}</Text> */}
       </CardBody>
     </Card>
   );

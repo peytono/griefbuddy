@@ -34,7 +34,7 @@ function AboutMe({
     axios
       .patch('/profile', { id: user.id, data: { [updateKey]: updateValue } })
       .then(({ data }) => setUser(data))
-      .catch((err) => console.log('failed patching user: ', err));
+      .catch((err) => console.error('failed patching user: ', err));
   }
 
   return (
@@ -52,7 +52,7 @@ function AboutMe({
       <Editable
         value={updatedLocation || 'set location'}
         onChange={(curValue) => updateLocation(curValue)}
-        // onSubmit={}
+        onSubmit={() => updateUser('myLocation', updatedLocation)}
       >
         <EditablePreview />
         <EditableInput />
@@ -63,7 +63,7 @@ function AboutMe({
       <Editable
         value={updatedFriendName || 'add name here'}
         onChange={(curValue) => updateFriendName(curValue)}
-        // onSubmit={}
+        onSubmit={() => updateUser('emConName', updatedFriendName)}
       >
         <EditablePreview />
         <EditableInput />
@@ -72,7 +72,7 @@ function AboutMe({
       <Editable
         value={updatedFriendNumber || '(XXX)XXX-XXXX'}
         onChange={(curValue) => updateFriendNumber(curValue)}
-        // onSubmit={}
+        onSubmit={() => updateUser('emConNum', updatedFriendNumber)}
       >
         <EditablePreview />
         <EditableInput />
