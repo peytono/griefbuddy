@@ -59,17 +59,20 @@ function Profile() {
   function getUser() {
     return axios
       .get('/user')
-      .then(({ data }) => axios.get('/chat/user', { params: { id: data.id } }))
-      .then(({ data }) => {
-        setUserObj(data);
-        setUserPic(data.userPicture);
-        setNickname(data.preferredName);
-        setAge(data.agee);
-        setMood(data.currMood);
-        setLocation(data.myLocation);
-        setFriendName(data.emConName);
-        setFriendNumber(data.emConNum);
-        setFriendRelationship(data.emConRelationship);
+      .then((userCookie: { data: { id: number } }) => {
+        if (userCookie.data.id) {
+          axios.get('/chat/user', { params: { id: userCookie.data.id } }).then(({ data }: { data: UserType }) => {
+            setUserObj(data);
+            setUserPic(data.userPicture);
+            setNickname(data.preferredName);
+            setAge(data.agee);
+            setMood(data.currMood);
+            setLocation(data.myLocation);
+            setFriendName(data.emConName);
+            setFriendNumber(data.emConNum);
+            setFriendRelationship(data.emConRelationship);
+          });
+        }
       })
       .catch((err: Error) => console.error('failed getting user pic', err));
   }
