@@ -5,7 +5,8 @@ import { io, Socket } from 'socket.io-client';
 
 import theme from '../styling/theme';
 import HomePage from './HomePage';
-import Profile from './Profile';
+// import Profile from './Profile';
+import Profile from './ProfileComponents/Profile';
 // import Buddy from './Buddy';
 import Chat from './Chat';
 import Buddy from './BuddyComponents/Buddy';
