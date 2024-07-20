@@ -8,10 +8,7 @@ import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 const prisma = new PrismaClient();
 const router = express.Router();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
-const host =
-  process.env.MODE === 'development'
-    ? 'http://localhost:3000'
-    : process.env.HOST;
+const host = process.env.MODE === 'development' ? 'http://localhost:3000' : process.env.HOST;
 
 passport.use(
   new GoogleStrategy(
@@ -23,17 +20,18 @@ passport.use(
     },
     (_accessToken, _refreshToken, _other, profile, done) => {
       const { id, displayName, photos } = profile;
-      prisma.user.upsert({
-        where: {
-          googleId: id,
-        },
-        update: {},
-        create: {
-          googleId: id,
-          name: displayName,
-          userPicture: photos[0].value
-        },
-      })
+      prisma.user
+        .upsert({
+          where: {
+            googleId: id,
+          },
+          update: {},
+          create: {
+            googleId: id,
+            name: displayName,
+            userPicture: photos[0].value,
+          },
+        })
         .then((user: object) => done(null, user))
         .catch((err: Error) => {
           console.error('failed finding or creating user', err);

@@ -57,14 +57,11 @@ function Profile() {
   const bg = useColorModeValue('blue.200', 'blue.600');
 
   function getUser() {
-     return axios
-      .get("/user")
+    return axios
+      .get('/user')
+      .then(({ data }) => axios.get('/chat/user', { params: { id: data.id } }))
       .then(({ data }) => {
-        return axios
-        .get('/chat/user', {params: {id: data.id}})
-      })
-      .then(({ data }) => {
-        setUserObj(data)
+        setUserObj(data);
         setUserPic(data.userPicture);
         setNickname(data.preferredName);
         setAge(data.agee);
@@ -80,7 +77,6 @@ function Profile() {
     getUser();
   }, []);
 
-  
   function updateUser() {
     axios
       .patch('/profile/user', {
@@ -99,13 +95,13 @@ function Profile() {
       })
       .then((response) => {
         setUserObj(response.data);
-        setNickname(response.data.preferredName)
-        setAge(response.data.agee)
-        setMood(response.data.currMood)
-        setLocation(response.data.myLocation)
-        setFriendName(response.data.emConName)
-        setFriendNumber(response.data.emConNumber)
-        setFriendRelationship(response.data.emConRelationship)
+        setNickname(response.data.preferredName);
+        setAge(response.data.agee);
+        setMood(response.data.currMood);
+        setLocation(response.data.myLocation);
+        setFriendName(response.data.emConName);
+        setFriendNumber(response.data.emConNumber);
+        setFriendRelationship(response.data.emConRelationship);
         // console.log(response.data)
       })
       // .then(() => {
