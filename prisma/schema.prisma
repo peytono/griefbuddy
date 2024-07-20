@@ -25,7 +25,7 @@ model User {
   userPicture       String?
   currMood          String?
   myLocation        String?
-  agee              String?
+  age              String?
   myPhoneNumber     String?
   events            User_Event[]
   sender            Message[]          @relation("Sender")
