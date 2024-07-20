@@ -25,7 +25,9 @@ passport.use(
           where: {
             googleId: id,
           },
-          update: {},
+          update: {
+            userPicture: photos[0].value,
+          },
           create: {
             googleId: id,
             name: displayName,
