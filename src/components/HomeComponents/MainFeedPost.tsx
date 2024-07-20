@@ -30,7 +30,7 @@ function MainFeedPost(props: any) {
     emConRelationship: String;
     emConName: String;
     currMood: String;
-    agee: String;
+    age: String;
     googleId: String;
     name: String;
     myLocation: String;

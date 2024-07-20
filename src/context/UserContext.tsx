@@ -12,7 +12,7 @@ export type AuthUser = {
   emConName: string,
   emConRelationship: String,
   currMood: String,
-  agee: String,
+  age: String,
   myLocation: String,
   myPhoneNumber: String,
   preferredName: String,
